@@ -32,4 +32,4 @@ while amount_saved < down_payment:
     if (months)%6 == 0: 
        yearly_salary += yearly_salary*semi_annual_raise
 
-print("Number of months: ", months)
+print(f"Number of months: {months}")

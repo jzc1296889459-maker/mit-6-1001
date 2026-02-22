@@ -29,4 +29,4 @@ while amount_saved < down_payment:
     months = months + 1
     amount_saved = amount_saved + saving_of_month + amount_saved *(r/12)
 
-print("Number of months: ", months)
+print(f"Number of months: {months}")
