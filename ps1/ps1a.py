@@ -26,7 +26,7 @@ saving_of_month = monthly_salary * portion_saved
 ###############################################################################################
 
 while amount_saved < down_payment:
-    months = months + 1
-    amount_saved = amount_saved + saving_of_month + amount_saved *(r/12)
+    months += 1
+    amount_saved += saving_of_month + amount_saved *(r/12)
 
 print(f"Number of months: {months}")

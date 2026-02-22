@@ -19,7 +19,7 @@ down_payment = 800000*0.25
 tor = 100
 months = 36
 
-# Setting up upper and lower bounds and pathelogical cases
+# Setting up upper and lower bounds and pathological cases
 a = 0.0
 b = 1.0
 steps = 0
@@ -31,7 +31,7 @@ if initial_deposit >= down_payment - tor:
 # if even with r = 1, we can't save enough, then none of r works
 elif max_saving < down_payment - tor:
     r = None
-# Case 3 (main case): we can implement bisection research
+# Case 3 (main case): we can implement bisection search
 else:
     r = (a+b)/2
     amount_saved = initial_deposit*(1 + r/12)**months
@@ -48,7 +48,10 @@ else:
         amount_saved = initial_deposit*(1 + r/12)**months
 
 
-print(f'Best savings rate: {r} [or very close to this number]')
+if r is None:
+    print("Best savings rate: None")
+else:
+    print(f"Best savings rate: {r}, [or very close to this number]")
 print(f'Steps in bisection search: {steps} [May vary based on how you implemented your bisection search]')
  
     
