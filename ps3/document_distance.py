@@ -38,7 +38,9 @@ def text_to_list(input_text):
     Returns:
         list representation of input_text, where each word is a different element in the list
     """
-    pass
+    wordlist = input_text.split()
+    
+    return wordlist
 
 
 ### Problem 1: Get Frequency ###
@@ -53,7 +55,8 @@ def get_frequencies(input_iterable):
     Note: 
         You can assume that the only kinds of white space in the text documents we provide will be new lines or space(s) between words (i.e. there are no tabs)
     """
-    pass
+    for i in range(len(input_iterable)):
+        
 
 
 ### Problem 2: Letter Frequencies ###
