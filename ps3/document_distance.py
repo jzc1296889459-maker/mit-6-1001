@@ -261,9 +261,11 @@ def get_tfidf(tf_file_path, idf_file_paths):
         lowest_word, lowest = items[0]
 
         for word, freq in items[1:]:
+            # Case 1: if freq is strictly lower, set it to be the new lowest
             if freq < lowest:
                 lowest = freq
                 lowest_word = word
+             # Case 2: if freq tie with the lowest, tie-break by alphabetical order
             elif freq == lowest and word < lowest_word:
                 lowest_word = word
         score_list.append((lowest_word,lowest))
