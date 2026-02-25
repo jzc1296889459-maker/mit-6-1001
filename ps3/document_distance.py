@@ -257,23 +257,18 @@ def get_tfidf(tf_file_path, idf_file_paths):
     # to mutate it at this stage
     temp_dict = tfidf_dict.copy()
     while temp_dict:
-        lowest = None
-        lowest_word = None
-        for word,freq in temp_dict.items():
-            # Case 1: if the old lowest is None, then set freq to be the new lowest
-            if lowest is None:
+        items = list(temp_dict.items())
+        lowest_word, lowest = items[0]
+
+        for word, freq in items[1:]:
+            if freq < lowest:
                 lowest = freq
                 lowest_word = word
-            # Case 2: if freq is strictly lower, set it to be the new lowest
-            elif freq < lowest:
-                lowest = freq
-                lowest_word = word
-            # Case 3: if freq tie with the lowest, check alphabetical order
-            # of word
             elif freq == lowest and word < lowest_word:
                 lowest_word = word
         score_list.append((lowest_word,lowest))
         del(temp_dict[lowest_word])
+    
     return score_list
         
         
