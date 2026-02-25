@@ -55,7 +55,13 @@ def get_frequencies(input_iterable):
     Note: 
         You can assume that the only kinds of white space in the text documents we provide will be new lines or space(s) between words (i.e. there are no tabs)
     """
-    for i in range(len(input_iterable)):
+    d = {}
+    for elem in input_iterable:
+        if elem in d:
+            d[elem] += 1
+        else:
+            d[elem] = 1
+    return d
         
 
 
@@ -69,7 +75,13 @@ def get_letter_frequencies(word):
         is a letter in word and the corresponding int
         is the frequency of the letter in word
     """
-    pass
+    d = {}
+    for letter in word:
+        if letter in d:
+            d[letter] += 1
+        else:
+            d[letter] = 1
+    return d
 
 
 ### Problem 3: Similarity ###
