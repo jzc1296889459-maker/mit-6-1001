@@ -109,7 +109,28 @@ def calculate_similarity_score(freq_dict1, freq_dict2):
          all frequencies in both dict1 and dict2.
         Return 1-(DIFF/ALL) rounded to 2 decimal places
     """
-    pass
+    words_unique = list(freq_dict1.keys())
+    for letter in freq_dict2.keys():
+        if letter not in words_unique:
+            words_unique.append(letter)
+    count_dict1 = freq_dict1.copy()
+    count_dict2 = freq_dict2.copy()
+    for word in words_unique:
+        if word not in freq_dict1:
+            count_dict1[word] = 0
+    for word in words_unique:
+        if word not in freq_dict2:
+            count_dict2[word] = 0
+    freq_diff = 0
+    freq_total = 0
+    for word in words_unique:
+        freq_diff += abs(count_dict1[word] - count_dict2[word])
+        freq_total += count_dict1[word] + count_dict2[word]
+    return round(1 - (freq_diff/freq_total),2)
+        
+        
+    
+    
 
 
 ### Problem 4: Most Frequent Word(s) ###
@@ -133,7 +154,19 @@ def get_most_frequent_words(freq_dict1, freq_dict2):
     If multiple words are tied (i.e. share the same highest frequency),
     return an alphabetically ordered list of all these words.
     """
-    pass
+    freq_words = freq_dict1.copy()
+    for word,freq in freq_dict2.items():
+        if word in freq_words:
+            freq_words[word] += freq
+        else:
+            freq_words[word] = freq
+    highest = max(freq_words.values())
+    highest_word =[]
+    for word,freq in freq_words.items():
+        if freq == highest:
+            highest_word.append(word)
+    return sorted(highest_word)
+    
 
 
 ### Problem 5: Finding TF-IDF ###
@@ -148,7 +181,17 @@ def get_tf(file_path):
         in the document) / (total number of words in the document)
     * Think about how we can use get_frequencies from earlier
     """
-    pass
+    text = load_file(file_path)
+    word_list = text_to_list(text)
+    freq_dict = get_frequencies(word_list)
+    tf_dict = {}
+    total = sum(freq_dict.values())
+    for word,freq in freq_dict.items():
+        tf_dict[word] = freq/total
+    
+    return tf_dict
+        
+        
 
 def get_idf(file_paths):
     """
@@ -162,7 +205,30 @@ def get_idf(file_paths):
     with math.log10()
 
     """
-    pass
+    texts = []
+    for file in file_paths:
+        text = text_to_list(load_file(file))
+        texts.append(text)
+    words = texts[0].copy()
+    for text in texts[1:]:
+        for word in text:
+            if word not in words:
+                words.append(word)
+    num_doc = len(texts)
+    indoc_dict = {}
+    for word in words:
+        indoc_dict[word] = 0
+        for text in texts:
+            if word in text:
+                indoc_dict[word] += 1
+    idf_dict = {}
+    for word,freq in indoc_dict.items():
+        idf_dict[word] = math.log10(num_doc/freq)
+    return idf_dict       
+                
+
+    
+    
 
 def get_tfidf(tf_file_path, idf_file_paths):
     """
@@ -177,8 +243,45 @@ def get_tfidf(tf_file_path, idf_file_paths):
 
         * TF-IDF(i) = TF(i) * IDF(i)
         """
-    pass
-
+    tf_dict = get_tf(tf_file_path)
+    idf_dict = get_idf(idf_file_paths)
+    tfidf_dict = {}
+    for word in tf_dict:
+        if word not in idf_dict:
+            tfidf_dict[word] = 0.0
+        else:
+            tfidf_dict[word] = tf_dict[word]*idf_dict[word]
+    score_list = []
+    
+    # Hypothetically, there might be use of tfidf_dict in the future, so I don't really want
+    # to mutate it at this stage
+    temp_dict = tfidf_dict.copy()
+    while temp_dict:
+        lowest = None
+        lowest_word = None
+        for word,freq in temp_dict.items():
+            # Case 1: if the old lowest is None, then set freq to be the new lowest
+            if lowest is None:
+                lowest = freq
+                lowest_word = word
+            # Case 2: if freq is strictly lower, set it to be the new lowest
+            elif freq < lowest:
+                lowest = freq
+                lowest_word = word
+            # Case 3: if freq tie with the lowest, check alphabetical order
+            # of word
+            elif freq == lowest and word < lowest_word:
+                lowest_word = word
+        score_list.append((lowest_word,lowest))
+        del(temp_dict[lowest_word])
+    return score_list
+        
+        
+            
+      
+        
+    
+    
 
 if __name__ == "__main__":
     pass
