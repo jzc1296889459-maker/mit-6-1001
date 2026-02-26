@@ -7,9 +7,9 @@ from tree import Node # Imports the Node object used to construct trees
 # Part A0: Data representation
 # Fill out the following variables correctly.
 # If correct, the test named test_data_representation should pass.
-tree1 = None #TODO
-tree2 = None #TODO
-tree3 = None #TODO
+tree1 = Node(8,Node(2, Node(1), Node(6)), Node(10)) #TODO
+tree2 = Node(7,Node(2, Node(1), Node(5, Node(3), Node(6))), Node(9, Node(8), Node(10))) #TODO
+tree3 = Node(5, Node(3, Node(2), Node(4)),Node(14, Node(12), Node(21, Node(20), Node(26)))) #TODO
 
 def find_tree_height(tree):
     '''
@@ -20,7 +20,18 @@ def find_tree_height(tree):
         The integer depth of the tree
     '''
     # TODO: Remove pass and write your code here
-    pass
+    if tree is None:
+        return -1  
+    left_height = find_tree_height(tree.get_left_child())
+    right_height = find_tree_height(tree.get_right_child())
+
+    return 1 + max(left_height, right_height)
+
+     
+         
+       
+       
+        
 
 def is_heap(tree, compare_func):
     '''
@@ -34,7 +45,31 @@ def is_heap(tree, compare_func):
         True if the entire tree satisfies the compare_func function; False otherwise
     '''
     # TODO: Remove pass and write your code here
-    pass
+    left_child = tree.get_left_child()
+    right_child = tree.get_right_child()
+    root = tree.get_value()
+    if left_child is None and right_child is None:
+        return True
+    elif left_child is None and right_child is not None:
+        right_val = right_child.get_value()
+        return is_heap(tree.get_right_child(), compare_func) and compare_func(right_val, root)
+    elif left_child is not None and right_child is None:
+        left_val = left_child.get_value()
+        return is_heap(tree.get_left_child(), compare_func)  and compare_func(left_val, root)
+    else:
+        left_val = left_child.get_value()
+        right_val = right_child.get_value()
+        max_or_min = compare_func(left_val, root) and compare_func(right_val,root)
+        if max_or_min:
+            is_left_heap = is_heap(tree.get_left_child(), compare_func) 
+            is_right_heap = is_heap(tree.get_right_child(), compare_func)
+            return is_left_heap and is_right_heap
+        else:
+            return False
+        
+        
+       
+        
 
 
 

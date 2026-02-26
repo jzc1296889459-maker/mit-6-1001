@@ -117,7 +117,7 @@ class Results_600(unittest.TextTestResult):
 if __name__ == '__main__':
 
 	suite = unittest.TestSuite()
-	suite.addTest(unittest.makeSuite(TestPS4A))
+	suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPS4A))
 	result = unittest.TextTestRunner(verbosity=2, resultclass=Results_600).run(suite)
 
 	output = result.getOutput()
