@@ -80,7 +80,28 @@ def decrypt_message_try_pads(ciphertext, pads):
 
     Returns: (PlaintextMessage) A message with the decrypted ciphertext and the best pad
     '''
-    raise NotImplementedError  # delete this line and replace with your code here
+    max_pad = None
+    max_text = ''
+    curr_max = -1
+
+    
+    word_list = load_words(WORDLIST_FILENAME)
+    for pad in pads:
+        decrypt_msg = ciphertext.decrypt_message(pad)
+        decrypt_text = decrypt_msg.get_text()
+        words = decrypt_text.split()
+        count = 0
+        
+        for word in words:
+            if is_word(word_list, word):
+                count += 1
+                
+        if count >= curr_max:
+            curr_max = count
+            max_pad = pad
+            max_text = decrypt_text
+            
+    return ps4b.PlaintextMessage(max_text, max_pad)
 
 
 def decode_story():
@@ -91,12 +112,13 @@ def decode_story():
     Returns: (string) the decoded story
 
     '''
-    raise NotImplementedError  # delete this line and replace with your code here
-
+    bob_story = ps4b.EncryptedMessage(get_story_string())
+    pads = get_story_pads()
+    return decrypt_message_try_pads(bob_story, pads).get_text()
 
 
 if __name__ == '__main__':
     # # Uncomment these lines to try running decode_story()
-    # story = decode_story()
-    # print("Decoded story: ", story)
+    story = decode_story()
+    print("Decoded story: ", story)
     pass
