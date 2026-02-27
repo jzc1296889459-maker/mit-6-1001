@@ -88,8 +88,8 @@ class PlaintextMessage(Message):
         if pad is None:
             self.pad = self.generate_pad()
         else:
-            self.pad = pad
-        self.change_pad(self.get_pad())
+            self.pad = pad.copy()
+        
 
     def __repr__(self):
         '''
@@ -121,10 +121,8 @@ class PlaintextMessage(Message):
 
         Returns: (list of integers) a COPY of your pad
         '''
-        pad_copy = []
-        for elem in self.pad:
-            pad_copy.append(elem)
-        return pad_copy
+        
+        return self.pad.copy()
 
     def get_ciphertext(self):
         '''
@@ -132,7 +130,7 @@ class PlaintextMessage(Message):
 
         Returns: (string) the ciphertext
         '''
-        self.change_pad(self.get_pad())
+        
         return self.apply_pad(self.pad)
         
   
@@ -149,7 +147,7 @@ class PlaintextMessage(Message):
 
         Returns: nothing
         '''
-        self.pad = new_pad
+        self.pad = new_pad.copy()
 
 
 class EncryptedMessage(Message):
